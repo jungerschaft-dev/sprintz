@@ -1,0 +1,203 @@
+.root {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logoMark {
+  font-size: 18px;
+}
+
+.logoText {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: var(--text-1);
+}
+
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navLabel {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 8px 8px 4px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text-2);
+  font-size: 13px;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navItem:hover { background: var(--bg-3); color: var(--text-1); }
+.navItem.active { background: var(--accent-dim); color: var(--accent-light); }
+
+.navIcon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.projectDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.newProject {
+  color: var(--text-3);
+  font-size: 12px;
+  margin-top: 4px;
+}
+.newProject:hover { color: var(--accent-light); background: var(--accent-dim); }
+
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  color: var(--accent-light);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userEmail {
+  font-size: 11px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logoutBtn {
+  color: var(--text-3);
+  font-size: 16px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: color 0.12s, background 0.12s;
+}
+.logoutBtn:hover { color: var(--text-1); background: var(--bg-3); }
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+/* ─── Mobile ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .root { flex-direction: column; height: auto; min-height: 100vh; }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+  }
+
+  .logo { padding: 12px 14px; border-bottom: none; flex-shrink: 0; }
+  .logoText { display: none; }
+
+  .nav {
+    flex: 1;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 8px;
+    gap: 4px;
+    align-items: center;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  .navLabel { display: none; }
+
+  .navItem {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  .newProject { display: none; }
+
+  .userRow {
+    padding: 8px 12px;
+    border-top: none;
+    border-left: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .userInfo { display: none; }
+
+  .main { flex: 1; overflow-y: auto; }
+}

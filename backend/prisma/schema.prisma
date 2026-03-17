@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  MEMBER
+  VIEWER
+}
+
+enum SprintStatus {
+  PLANNING
+  ACTIVE
+  COMPLETED
+}
+
+enum TaskStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  projectMembers  ProjectMember[]
+  createdTasks    Task[]          @relation("CreatedBy")
+  assignedTasks   Task[]          @relation("AssignedTo")
+  comments        Comment[]
+  calendarEvents  CalendarEvent[]
+
+  @@map("users")
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  members ProjectMember[]
+  sprints Sprint[]
+  tasks   Task[]
+  labels  Label[]
+
+  @@map("projects")
+}
+
+model ProjectMember {
+  id        String  @id @default(uuid())
+  userId    String  @map("user_id")
+  projectId String  @map("project_id")
+  role      Role    @default(MEMBER)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId])
+  @@map("project_members")
+}
+
+model Sprint {
+  id        String       @id @default(uuid())
+  projectId String       @map("project_id")
+  name      String
+  goal      String?
+  status    SprintStatus @default(PLANNING)
+  startDate DateTime?    @map("start_date")
+  endDate   DateTime?    @map("end_date")
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tasks   Task[]
+
+  @@map("sprints")
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  projectId   String     @map("project_id")
+  sprintId    String?    @map("sprint_id")
+  createdById String     @map("created_by")
+  assignedToId String?   @map("assigned_to")
+  title       String
+  description String?
+  status      TaskStatus @default(BACKLOG)
+  priority    Priority   @default(MEDIUM)
+  storyPoints Int?       @map("story_points")
+  position    Int        @default(0)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sprint     Sprint?    @relation(fields: [sprintId], references: [id], onDelete: SetNull)
+  createdBy  User       @relation("CreatedBy", fields: [createdById], references: [id])
+  assignedTo User?      @relation("AssignedTo", fields: [assignedToId], references: [id])
+  labels     TaskLabel[]
+  comments   Comment[]
+
+  @@map("tasks")
+}
+
+model Label {
+  id        String @id @default(uuid())
+  projectId String @map("project_id")
+  name      String
+  color     String @default("#6366f1")
+
+  project Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tasks   TaskLabel[]
+
+  @@map("labels")
+}
+
+model TaskLabel {
+  taskId  String @map("task_id")
+  labelId String @map("label_id")
+
+  task  Task  @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, labelId])
+  @@map("task_labels")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  taskId    String   @map("task_id")
+  userId    String   @map("user_id")
+  body      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+enum CalendarEventType {
+  EVENT
+  TASK
+}
+
+model CalendarEvent {
+  id          String            @id @default(uuid())
+  userId      String            @map("user_id")
+  title       String
+  description String?
+  startAt     DateTime          @map("start_at")
+  endAt       DateTime?         @map("end_at")
+  allDay      Boolean           @default(false) @map("all_day")
+  color       String            @default("#6366f1")
+  type        CalendarEventType @default(EVENT)
+  completed   Boolean           @default(false)
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("calendar_events")
+}

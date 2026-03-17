@@ -1,0 +1,172 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.loading {
+  padding: 48px;
+  color: var(--text-3);
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 28px 32px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.headerLeft { display: flex; flex-direction: column; gap: 8px; }
+.headerRight { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+
+.back {
+  font-size: 12px;
+  color: var(--text-3);
+  transition: color 0.12s;
+  text-align: left;
+}
+.back:hover { color: var(--text-1); }
+
+.sprintMeta { display: flex; align-items: center; gap: 10px; }
+
+.sprintName {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: var(--text-1);
+}
+
+.goal { font-size: 13px; color: var(--text-2); }
+
+.stats { display: flex; align-items: center; gap: 24px; }
+
+.stat { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+
+.statVal { font-size: 18px; font-weight: 600; color: var(--text-1); font-variant-numeric: tabular-nums; }
+
+.statLabel { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.progress {
+  height: 2px;
+  background: var(--bg-3);
+  flex-shrink: 0;
+}
+
+.progressBar {
+  height: 100%;
+  background: var(--green);
+  transition: width 0.4s ease;
+}
+
+.dates {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 32px;
+  font-size: 12px;
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+.dateSep { color: var(--text-3); }
+
+/* Board */
+.board {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: flex-start;
+}
+
+.column {
+  flex: 0 0 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  min-height: 200px;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.colHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 4px;
+}
+
+.colLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+}
+
+.colCount {
+  font-size: 11px;
+  color: var(--text-3);
+  background: var(--bg-3);
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.quickAdd { padding: 2px; }
+
+.quickInput {
+  width: 100%;
+  background: var(--bg-3);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--text-1);
+  outline: none;
+}
+.quickInput::placeholder { color: var(--text-3); }
+
+.addBtn {
+  font-size: 12px;
+  color: var(--text-3);
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  transition: color 0.12s, background 0.12s;
+  text-align: left;
+  width: 100%;
+}
+.addBtn:hover { color: var(--text-1); background: var(--bg-3); }
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    padding: 16px 16px 12px;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .headerRight { width: 100%; justify-content: space-between; }
+  .stats { gap: 16px; }
+
+  .board {
+    padding: 12px 12px 20px;
+    gap: 10px;
+  }
+  .column { flex: 0 0 200px; }
+
+  .dates { padding: 8px 16px; }
+}
